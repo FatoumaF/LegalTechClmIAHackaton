@@ -1,0 +1,7 @@
+Double accoladde {{ On affiche ce que nous renvoie une fonction }}
+Une accolade {% C'est un tag en twig élement de calcule condition boucles etc vont etre dans des tags %}
+Easy admin founir un structure bien organisée avec des blocks personnalisable
+
+
+bloc main est généralement préférée pour les personnalisations de page complètes car elle offre une flexibilité et une compatibilité accrues avec la structure et les conventions d'EasyAdmin. Le bloc page_content peut être utilisé pour des personnalisations plus spécifiques et ciblées, mais il est recommandé de l'utiliser à l'intérieur du bloc main pour garantir une structure correcte.
+C'est dans main on peut contruire les graphs 
