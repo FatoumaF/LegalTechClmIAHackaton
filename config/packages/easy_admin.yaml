@@ -1,3 +1,5 @@
 # config/packages/easy_admin.yaml
 easy_admin:
-    site_name: 'CLM Admin'
+    entities:
+        User:
+            class: App\Entity\User
