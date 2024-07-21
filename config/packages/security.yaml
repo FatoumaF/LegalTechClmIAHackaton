@@ -1,3 +1,4 @@
+# config/packages/security.yaml
 security:
     enable_authenticator_manager: true
 
@@ -21,5 +22,8 @@ security:
             logout:
                 path: app_logout
                 target: /
-    # Pas de section access_control ici
+
+    access_control:
+        # Accès à /admin limité aux utilisateurs avec ROLE_USER
+        - { path: ^/admin, roles: ROLE_USER }
 
