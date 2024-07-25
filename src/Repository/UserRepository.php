@@ -22,20 +22,58 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function save(){
+    // méthode pour sauvegardé une entité dans la base de donnée
+    public function saveUser(User $entity, bool $flush = false): void
+    {
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+        
 
     }
-    public function remove(){
+
+    //méthode pour supprimer une entité d'une base de donnée
+    public function remove(User $entity,bool $flush= false ) : void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    
+    public function findOneId(){
+        return $this->createQueryBuilder('u')
+        ->andWhere('email ');
+        
 
     }
-    public function getOneId(){
 
+    // public function findOneId(string $id):?User
+    // {
+    //     return $this->createQueryBuilder('u')
+    //     ->select('* FROM u')
+    //     ->andWhere('u.id= :id')
+    //     ->setParameter('id', $id)
+    //     ->getQuery()
+    //     ->getOneOrNullResult();
+        
+
+    // }
+
+    public function findAllUsers(): array
+{
+    return $this->findAll();
+}
+    public function getByEmail(string $email):?User 
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
-
-    public function getAllId(){
-
-    }
-    public function getBy(){
+        
 
     }
 //    /**
@@ -62,4 +100,4 @@ class UserRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}
+

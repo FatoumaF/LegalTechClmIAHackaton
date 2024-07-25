@@ -1,5 +1,16 @@
-# config/packages/easy_admin.yaml
 easy_admin:
+    # liste des entités que vous voulez gérer
+
+    user:
+        display_name: true
+        name_property_path: 'userName'
+
     entities:
         User:
             class: App\Entity\User
+        Contrat:
+            class: App\Entity\Contrat
+        Document:
+            class: App\Entity\Document
+        Tache:
+            class: App\Entity\Tache
