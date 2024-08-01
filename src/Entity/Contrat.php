@@ -27,7 +27,7 @@ class Contrat
     private $dateFin;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $partiesImpliquées;
+    private $partiesImpliquees;
 
     #[ORM\Column(type: 'string', length: 50)]
     private $statut;
@@ -79,13 +79,13 @@ class Contrat
         $this->dateFin=$dateFin;
         return $this;
     }
-   public function getpartiesImpliquées(): ?string
+   public function getpartiesImpliquees(): ?string
    {
-    return $this->partiesImpliquées;
+    return $this->partiesImpliquees;
    }
-   public function setpartiesImpliquées(string $partiesImpliquées): self
+   public function setpartiesImpliquees(string $partiesImpliquees): self
    {
-        $this->partiesImpliquées=$partiesImpliquées;
+        $this->partiesImpliquees=$partiesImpliquees;
         return $this;
    }
 
