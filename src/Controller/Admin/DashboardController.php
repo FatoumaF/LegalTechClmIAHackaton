@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
-class DashboardController extends AbstractDashboardController
+class DashboardController extends AbstractDashboardController // DashboardController is just a normal controller. Though, it does extend AbstractDashboardController:
 {
     public function __construct(
         private ChartBuilderInterface $chartBuilder,
@@ -31,11 +31,11 @@ class DashboardController extends AbstractDashboardController
             throw new AccessDeniedException('Vous n\'avez pas accès à cette route.');
         }
 
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        // $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
 
-        return $this->render('admin/my-dashboard.html.twig', [
-            'chart' => $chart,
-        ]);
+        // return $this->render('admin/my-dashboard.html.twig', [
+        //     'chart' => $chart,
+        // ]);
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -51,14 +51,16 @@ class DashboardController extends AbstractDashboardController
         // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
-        // return $this->render('some/path/my-dashboard.html.twig');
+         return $this->render('admin/my-dashboard.html.twig');
     }
 
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('LegalTechClmProject');
+            ->setTitle(title :'LegalTechClmProject'); //(-> ce sont les options lié au dashboard)
+           
     }
+
 
     public function configureMenuItems(): iterable
     {
