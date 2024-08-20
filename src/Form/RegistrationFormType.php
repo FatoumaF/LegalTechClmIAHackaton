@@ -54,4 +54,8 @@ class RegistrationFormType extends AbstractType
             'data_class' => User::class,
         ]);
     }
+    // Debug: afficher le contenu HTML de la page
+
+
 }
+
