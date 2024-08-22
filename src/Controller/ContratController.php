@@ -20,6 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 
 class ContratController extends  AbstractCrudController
+// faire ses CREAT READ UPDATE ET DELETE
 {
     public static function getEntityFqcn(): string
     {
