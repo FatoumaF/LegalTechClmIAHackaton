@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\TacheRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User; // Import correct de User
 
 #[ORM\Entity(repositoryClass: TacheRepository::class)]
 class Tache
@@ -31,6 +31,10 @@ class Tache
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $dateCompletion;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'taches')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user; // Défini une seule fois
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,7 +48,6 @@ class Tache
     public function setTitre(string $titre): self
     {
         $this->titre = $titre;
-
         return $this;
     }
 
@@ -56,7 +59,6 @@ class Tache
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -68,7 +70,6 @@ class Tache
     public function setCompleted(bool $completed): self
     {
         $this->completed = $completed;
-
         return $this;
     }
 
@@ -80,7 +81,6 @@ class Tache
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
-
         return $this;
     }
 
@@ -92,7 +92,6 @@ class Tache
     public function setDateEcheance(?\DateTimeInterface $dateEcheance): self
     {
         $this->dateEcheance = $dateEcheance;
-
         return $this;
     }
 
@@ -104,7 +103,17 @@ class Tache
     public function setDateCompletion(?\DateTimeInterface $dateCompletion): self
     {
         $this->dateCompletion = $dateCompletion;
+        return $this;
+    }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
         return $this;
     }
 }
