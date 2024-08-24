@@ -1,6 +1,5 @@
 <?php
 
-// src/Entity/User.php
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -10,7 +9,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Entity\Tache; // Import correct de Tache
+use App\Entity\Tache;
+use App\Entity\Contrat;
+use App\Entity\Document;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -23,23 +25,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private string $email;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 180)]
     private string $username;
 
     #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 8)]
     private string $password;
 
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Tache::class)]
+    #[ORM\JoinColumn(nullable: false)]  // Assure que cette colonne ne peut pas être nulle
+
     private Collection $taches;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Contrat::class)]
+    private Collection $contrats;
+
+    //#[ORM\OneToMany(mappedBy: 'user', targetEntity: Document::class)]
+    //private Collection $documents;
 
     public function __construct()
     {
         $this->taches = new ArrayCollection();
+        $this->contrats = new ArrayCollection();
+      //  $this->documents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,7 +118,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
-        // Effacer les données sensibles si nécessaire
+        // Clear sensitive data if needed
     }
 
     public function getTaches(): Collection
@@ -120,11 +138,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeTache(Tache $tache): self
     {
         if ($this->taches->removeElement($tache)) {
-            // set the owning side to null (unless already changed)
             if ($tache->getUser() === $this) {
                 $tache->setUser(null);
             }
         }
         return $this;
     }
+
+    public function getContrats(): Collection
+    {
+        return $this->contrats;
+    }
+
+    public function addContrat(Contrat $contrat): self
+    {
+        if (!$this->contrats->contains($contrat)) {
+            $this->contrats[] = $contrat;
+            $contrat->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeContrat(Contrat $contrat): self
+    {
+        if ($this->contrats->removeElement($contrat)) {
+            if ($contrat->getUser() === $this) {
+                $contrat->setUser(null);
+            }
+        }
+        return $this;
+    }
+
 }

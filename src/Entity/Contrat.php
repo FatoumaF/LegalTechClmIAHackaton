@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\ContratRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: ContratRepository::class)]
 class Contrat
@@ -14,23 +14,28 @@ class Contrat
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $titre ;
+    private string $titre;
     
     #[ORM\Column(type: 'text')]
-    private $description ;
-
-
-    #[ORM\Column(type: 'datetime')]
-    private $dateDebut;
+    private string $description;
 
     #[ORM\Column(type: 'datetime')]
-    private $dateFin;
+    private \DateTimeInterface $dateDebut;
+
+    #[ORM\Column(type: 'datetime')]
+    private \DateTimeInterface $dateFin;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $partiesImpliquees;
+    private string $partiesImpliquees;
 
     #[ORM\Column(type: 'string', length: 50)]
-    private $statut;
+    private string $statut;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'contrats')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    // Getters and Setters
 
     public function getId(): ?int
     {
@@ -42,62 +47,75 @@ class Contrat
         return $this->titre;
     }
 
-    public function setTitre(string $titre ): self
+    public function setTitre(string $titre): self
     {
-        $this->titre=$titre;
+        $this->titre = $titre;
         return $this;
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
-    public function setDescription(string $description):self
+
+    public function setDescription(string $description): self
     {
-        $this->description =$description;
+        $this->description = $description;
         return $this;
     }
 
-    public function getdateDebut():?\DateTimeInterface
+    public function getDateDebut(): \DateTimeInterface
     {
         return $this->dateDebut;
     }
 
-    public function setdateDebut(\DateTimeInterface $dateDebut): self
+    public function setDateDebut(\DateTimeInterface $dateDebut): self
     {
-        $this->dateDebut= $dateDebut;
+        $this->dateDebut = $dateDebut;
         return $this;
     }
 
-    public function getdateFin():?\DateTimeInterface
+    public function getDateFin(): \DateTimeInterface
     {
         return $this->dateFin;
     }
 
-    public function setdateFin(\DateTimeInterface $dateFin): self
+    public function setDateFin(\DateTimeInterface $dateFin): self
     {
-        $this->dateFin=$dateFin;
+        $this->dateFin = $dateFin;
         return $this;
     }
-   public function getpartiesImpliquees(): ?string
-   {
-    return $this->partiesImpliquees;
-   }
-   public function setpartiesImpliquees(string $partiesImpliquees): self
-   {
-        $this->partiesImpliquees=$partiesImpliquees;
+
+    public function getPartiesImpliquees(): string
+    {
+        return $this->partiesImpliquees;
+    }
+
+    public function setPartiesImpliquees(string $partiesImpliquees): self
+    {
+        $this->partiesImpliquees = $partiesImpliquees;
         return $this;
-   }
+    }
 
-   public function getStatut(): ?string
-   {
-    return $this->statut;
-   }
+    public function getStatut(): string
+    {
+        return $this->statut;
+    }
 
-   public function setStatut(string $statut): self
-   {
-    $this->statut=$statut;
-    return $this;
-   }
+    public function setStatut(string $statut): self
+    {
+        $this->statut = $statut;
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
 }
-
