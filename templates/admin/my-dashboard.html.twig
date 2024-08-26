@@ -1,9 +1,11 @@
-{# templates/admin/my_dashboard.html.twig #}
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title %}
-    Administration des contrats
-{% endblock %}
-{% block main %} 
- coucou
+{% block content %}
+    <h1>Tableau de Bord</h1>
+
+    <div>
+        <h2>Mes Tâches</h2>
+        <p>Nombre de tâches : {{ taskCount }}</p>
+        {# Afficher le graphique si nécessaire #}
+    </div>
 {% endblock %}
