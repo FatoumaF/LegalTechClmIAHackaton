@@ -4,6 +4,8 @@ namespace App\Entity;
 use App\Repository\ContratRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+//use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ContratRepository::class)]
 class Contrat
@@ -14,7 +16,8 @@ class Contrat
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $titre;
+    private string $titre = '';
+
     
     #[ORM\Column(type: 'text')]
     private string $description;

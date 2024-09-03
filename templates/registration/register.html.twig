@@ -3,6 +3,8 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+    {{ dump(registrationForm) }}  {# Débogue le formulaire de registration #}
+
     <h1>M'inscrire </h1>
 
     {{ form_errors(registrationForm) }}

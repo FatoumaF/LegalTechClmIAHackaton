@@ -9,9 +9,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Entity\Tache;
-use App\Entity\Contrat;
-use App\Entity\Document;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -21,7 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
@@ -42,22 +39,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Tache::class)]
-    #[ORM\JoinColumn(nullable: false)]  // Assure que cette colonne ne peut pas être nulle
-
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Tache::class, orphanRemoval: true)]
     private Collection $taches;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Contrat::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Contrat::class, orphanRemoval: true)]
     private Collection $contrats;
-
-    //#[ORM\OneToMany(mappedBy: 'user', targetEntity: Document::class)]
-    //private Collection $documents;
 
     public function __construct()
     {
         $this->taches = new ArrayCollection();
         $this->contrats = new ArrayCollection();
-      //  $this->documents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -168,5 +159,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
         return $this;
     }
-
 }

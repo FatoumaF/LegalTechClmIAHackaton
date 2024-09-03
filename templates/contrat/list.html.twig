@@ -1,0 +1,8 @@
+{# templates/contrat/index.html.twig #}
+<h1>Mes Contrats</h1>
+
+<ul>
+    {% for contrat in contrats %}
+        <li>{{ contrat.titre }} - {{ contrat.statut }}</li>
+    {% endfor %}
+</ul>

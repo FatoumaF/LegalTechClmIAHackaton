@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\ContratController;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -57,8 +58,9 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-dashboard');
-        yield MenuItem::linkToCrud('Contrats', 'fa fa-file-contract', Contrat::class);
+        yield MenuItem::linkToCrud('Contrats', 'fa fa-file-contract', Contrat::class)->setController(ContratController::class);
         yield MenuItem::linkToCrud('Tâches', 'fa fa-list', Tache::class);
-        //yield MenuItem::linkToCrud('Calendrier', 'fa fa-calendar', Calendrier::class);
+        // Ajoutez ici d'autres éléments de menu si nécessaire
     }
 }
+
