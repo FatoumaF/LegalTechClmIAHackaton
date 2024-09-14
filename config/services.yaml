@@ -4,6 +4,7 @@ services:
         autowire: true
         autoconfigure: true
 
+    # Autoload all services in the src/ directory, except the ones excluded
     App\:
         resource: '../src/'
         exclude:
@@ -11,6 +12,13 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # Autoload controllers
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+    # Define your custom service explicitly
+    App\Service\GoogleCalendarService:
+        # Optionally, if needed, define arguments here
+        # arguments:
+        #     $googleApiKey: '%env(GOOGLE_API_KEY)%'

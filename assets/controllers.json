@@ -1,4 +1,9 @@
 {
-    "controllers": [],
-    "entrypoints": []
-}
+    "chart": {
+      "enabled": true,
+      "autoimport": {
+        "styles": true
+      }
+    }
+  }
+  

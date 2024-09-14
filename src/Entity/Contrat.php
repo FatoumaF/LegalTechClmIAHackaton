@@ -1,24 +1,35 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\ContratRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\User;
-//use Symfony\Component\Validator\Constraints as Assert;
-
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ContratRepository::class)]
+#[Vich\Uploadable]
 class Contrat
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $titre = '';
 
-    
+    /**
+     * @Vich\UploadableField(mapping="contrat_files", fileNameProperty="documentName")
+     * @Assert\File(mimeTypes={"application/pdf", "application/msword"})
+     */
+    private ?File $contratFile = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $documentName = null;
+
     #[ORM\Column(type: 'text')]
     private string $description;
 
@@ -37,6 +48,9 @@ class Contrat
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'contrats')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     // Getters and Setters
 
@@ -109,6 +123,34 @@ class Contrat
     {
         $this->statut = $statut;
         return $this;
+    }
+
+    /**
+     * @param File|null $contratFile
+     */
+    public function setContratFile(?File $contratFile = null): void
+    {
+        $this->contratFile = $contratFile;
+
+        if ($contratFile !== null) {
+            // Met à jour la date pour forcer la mise à jour de l'entité
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getContratFile(): ?File
+    {
+        return $this->contratFile;
+    }
+
+    public function getDocumentName(): ?string
+    {
+        return $this->documentName;
+    }
+
+    public function setDocumentName(?string $documentName): void
+    {
+        $this->documentName = $documentName;
     }
 
     public function getUser(): ?User

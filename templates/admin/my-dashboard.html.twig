@@ -1,10 +1,91 @@
+{# templates/admin/my-dashboard.html.twig #}
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block content %}
-    <h1>Tableau de Bord</h1>
+    <div class="container">
+        <h1>Dashboard</h1>
 
-    <div>
-       
-        {# Afficher le graphique si nécessaire #}
+        <!-- Graphique de Workflow -->
+        <h2>Overview du Workflow</h2>
+        <canvas id="workflowChart" width="400" height="200"></canvas>
+
+        <!-- Graphique de Progression des Contrats -->
+        <h2>Progression des Contrats</h2>
+        <canvas id="progressionChart" width="400" height="200"></canvas>
+
+
+
+        <!-- Incluez Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            // Obtenez les données du graphique de workflow
+            const workflowChartData = {{ chartData|raw }};
+            const workflowCtx = document.getElementById('workflowChart').getContext('2d');
+            new Chart(workflowCtx, {
+                type: 'bar',
+                data: workflowChartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Obtenez les données du graphique de progression des contrats
+            const progressionChartData = {{ chartDataProgressionContrat|raw }};
+            const progressionCtx = document.getElementById('progressionChart').getContext('2d');
+            new Chart(progressionCtx, {
+                type: 'bar',
+                data: progressionChartData,
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
     </div>
 {% endblock %}

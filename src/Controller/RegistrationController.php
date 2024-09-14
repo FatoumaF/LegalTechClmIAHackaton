@@ -25,11 +25,13 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         // Traitement du formulaire
         if ($form->isSubmitted() && $form->isValid()) {
+            dump($form->getData()); // Vérifiez les données envoyées
+            dump($form->getErrors(true, false));
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
             $user->setEmail($form->get('email')->getData());  // Correct

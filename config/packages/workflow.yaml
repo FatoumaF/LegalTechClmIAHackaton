@@ -1,0 +1,29 @@
+framework:
+    workflows:
+        contrat_publishing:
+            type: 'state_machine'
+            supports:
+                - App\Entity\Contrat
+            initial_marking: creation
+            places:
+                - creation
+                - revision
+                - approbation
+                - signature
+                - complete
+            transitions:
+                submit_revision:
+                    from: creation
+                    to: revision
+                approve_contract:
+                    from: revision
+                    to: approbation
+                sign_contract:
+                    from: approbation
+                    to: signature
+                complete_contract:
+                    from: signature
+                    to: complete
+            marking_store:
+                property: 'statut'
+

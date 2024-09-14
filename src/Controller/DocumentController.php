@@ -1,31 +1,41 @@
 <?php
 
+
 namespace App\Controller;
 
 use App\Entity\Document;
-use App\Form\DocumentType;
-use App\Repository\DocumentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-
-
+use Symfony\Component\Security\Core\Security;
 
 class DocumentController extends AbstractCrudController
-// faire ses CREAT READ UPDATE ET DELETE
-{ 
+{
+    private Security $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public static function getEntityFqcn(): string
     {
         return Document::class;
     }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entity): void
+    {
+        if ($entity instanceof Document) {
+            $user = $this->security->getUser();  // Retrieve the currently logged-in user
+            if ($user) {
+                $entity->setUser($user);  // Associate the user with the document
+            }
+        }
+        parent::persistEntity($entityManager, $entity);
+    }
+
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -38,13 +48,7 @@ class DocumentController extends AbstractCrudController
             TextField::new('fichier'),
             TextField::new('contratAssocie'),
             TextField::new('statut'),
-        
-
-
-            #AssociationField::new('documents'),
-           # AssociationField::new('tasks'),
-            # Ajoutez d'autres champs selon vos besoins
+            // Add other fields as needed
         ];
     }
-    
 }

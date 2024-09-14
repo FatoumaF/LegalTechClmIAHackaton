@@ -1,0 +1,18 @@
+/* assets/styles/dashboard.css */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.dashboard-content {
+    flex: 1;
+}
+
+.chart-container {
+    padding: 20px;
+    text-align: center;
+    width: 50%; /* Adjust width as needed */
+    height: 300px; /* Adjust height as needed */
+}
+

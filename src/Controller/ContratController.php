@@ -1,80 +1,71 @@
 <?php
-// src/Controller/ContratController.php
-// src/Controller/ContratController.php
 
 namespace App\Controller;
 
 use App\Entity\Contrat;
 use App\Repository\ContratRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\VichFileField;
 
-class ContratController extends AbstractController
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+
+
+class ContratController extends AbstractCrudController
 {
-    private $userRepository;
-    private $contratRepository;
-    private $entityManager;
+    private $security;
 
-    public function __construct(UserRepository $userRepository, ContratRepository $contratRepository, EntityManagerInterface $entityManager)
+    public function __construct(Security $security)
     {
-        $this->userRepository = $userRepository;
-        $this->contratRepository = $contratRepository;
-        $this->entityManager = $entityManager;
+        $this->security = $security;
     }
 
-    /**
-     * @Route("/contrat/new", name="contrat_new")
-     */
-    public function new(Request $request): Response
+    public static function getEntityFqcn(): string
     {
-        $user = $this->getUser();
-
-        if (!$user) {
-            throw $this->createAccessDeniedException('User not found');
-        }
-
-        $contrat = new Contrat();
-        $form = $this->createForm(ContratType::class, $contrat);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $contrat->setUser($user);
-            $this->entityManager->persist($contrat);
-            $this->entityManager->flush();
-
-            return $this->redirectToRoute('contrat_list');
-        }
-
-        return $this->render('contrat/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return Contrat::class;
     }
 
-    /**
-     * @Route("/contrats", name="contrat_list")
-     */
-    public function list(): Response
+    public function persistEntity(EntityManagerInterface $entityManager, $entity): void
     {
-        $user = $this->getUser();
-
-        if (!$user) {
-            throw $this->createAccessDeniedException('User not found');
+        if ($entity instanceof Contrat) {
+            $user = $this->security->getUser();  // Récupère l'utilisateur actuellement connecté
+            if ($user) {
+                $entity->setUser($user);  // Associe l'utilisateur au contrat
+            }
         }
-
-        // Using the repository method directly
-        $contrats = $this->contratRepository->findByUser($user);
-
-        // Or using QueryBuilder method if you need more customization
-        // $qb = $this->contratRepository->getContractsByUserQueryBuilder($user);
-        // $contrats = $qb->getQuery()->getResult();
-
-        return $this->render('contrat/list.html.twig', [
-            'contrats' => $contrats,
-        ]);
+        parent::persistEntity($entityManager, $entity);
     }
+
+
+
+    public function configureFields(string $pageName): iterable
+{
+    return [
+        IdField::new('id')->hideOnForm(),
+        TextField::new('titre'),
+        TextField::new('description'),
+        DateField::new('dateDebut'),
+        DateField::new('dateFin'),
+        TextField::new('partiesImpliquees'),
+        ChoiceField::new('statut')->setChoices([
+            'Création' => 'création',
+            'Révision' => 'révision',
+            'Approbation' => 'approbation',
+            'Signature' => 'signature',
+            'Complété' => 'complété'
+        ]),
+    
+    ];
 }
 
+    
+}

@@ -1,13 +1,11 @@
 # config/packages/easy_admin.yaml
-
 easy_admin:
     design:
-        menu:
-            - { label: 'Dashboard', icon: 'fa fa-dashboard', route: 'easyadmin' }
-            - { label: 'Tâches', icon: 'fa fa-tasks', route: 'easyadmin', routeParameters: { entity: 'Tache' } }
-    user:
-        display_name: true
-        name_property_path: 'username'
+        templates:
+            layout: '@EasyAdmin/crud/base.html.twig' # Spécifiez le chemin du template de base
+    menu:
+        - { label: 'Dashboard', icon: 'fa fa-dashboard', route: 'admin_dashboard' }
+        - { label: 'Calendrier', icon: 'fa fa-calendar', route: 'calendrier_dashboard' }
     entities:
         User:
             class: App\Entity\User
@@ -17,4 +15,6 @@ easy_admin:
             class: App\Entity\Document
         Tache:
             class: App\Entity\Tache
-            controller: App\Controller\Admin\TacheCrudController
+        Calendrier:
+            class: App\Entity\Calendrier
+            controller: App\Controller\CalendrierController1

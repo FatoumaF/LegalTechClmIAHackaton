@@ -1,0 +1,17 @@
+{# templates/calendrier/sync.html.twig #}
+{% extends '@EasyAdmin/crud/base.html.twig' %}
+
+{% block body %}
+    <h1>Événements Google Calendar</h1>
+    <ul>
+        {% for event in events %}
+            <li>
+                <strong>{{ event.summary }}</strong><br>
+                Début: {{ event.start|date('Y-m-d H:i:s') }}<br>
+                Fin: {{ event.end|date('Y-m-d H:i:s') }}
+            </li>
+        {% else %}
+            <li>Aucun événement trouvé.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
