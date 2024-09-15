@@ -1,18 +1,30 @@
 /* assets/styles/dashboard.css */
+
+/* Styles pour le calendrier */
+#calendar {
+    height: 600px; /* Assurez-vous que la hauteur est suffisante pour afficher le calendrier */
+    width: 100%; /* Prend la largeur disponible */
+    border: 50px solid red; /* Ajoutez une bordure pour vérifier que le calendrier est bien positionné */
+
+}
+
+/* Styles pour le conteneur du tableau de bord */
 .dashboard-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
+/* Styles pour le contenu du tableau de bord */
 .dashboard-content {
     flex: 1;
+    padding: 20px; /* Ajoute un peu de padding pour le contenu */
 }
 
+/* Styles pour les graphiques */
 .chart-container {
     padding: 20px;
     text-align: center;
-    width: 50%; /* Adjust width as needed */
-    height: 300px; /* Adjust height as needed */
+    width: 50%; /* Ajuste la largeur des graphiques */
+    height: 300px; /* Ajuste la hauteur des graphiques */
 }
-

@@ -1,12 +1,10 @@
 import { defineConfig } from 'vite';
-import symfonyPlugin from 'vite-plugin-symfony';
 
 export default defineConfig({
-  plugins: [symfonyPlugin()],
   build: {
+    outDir: 'public/build',
     rollupOptions: {
-      input: './assets/app.js', // Fichier d'entrée principal
+      input: './assets/app.js',
     },
-    outDir: 'public/build', // Dossier de sortie pour les fichiers compilés
   },
 });

@@ -1,5 +1,4 @@
 services:
-    # default configuration for services in *this* file
     _defaults:
         autowire: true
         autoconfigure: true
@@ -17,8 +16,15 @@ services:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
-    # Define your custom service explicitly
-    App\Service\GoogleCalendarService:
-        # Optionally, if needed, define arguments here
-        # arguments:
-        #     $googleApiKey: '%env(GOOGLE_API_KEY)%'
+    # Define Google_Client service using the configurator class
+   # App\Service\GoogleClientConfigurator:
+       # public: true
+
+  #  Google_Client:
+        #class: Google_Client
+       # factory: ['@App\Service\GoogleClientConfigurator', 'createClient']
+
+    # Define Google Calendar Service
+    #App\Service\GoogleCalendarService:
+        #arguments:
+           # - '@Google_Client'

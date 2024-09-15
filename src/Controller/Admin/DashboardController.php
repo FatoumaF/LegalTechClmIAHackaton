@@ -5,8 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Contrat;
 use App\Entity\Tache;
 use App\Entity\Document;
-use App\Entity\Calendrier;
-use App\Service\GoogleCalendarService; // Ajoutez ce service
+use App\Form\Type\CalendarType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ContratRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -17,6 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\Registry;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Fields;
+use Symfony\Component\HttpFoundation\Request;
+
+
 
 class DashboardController extends AbstractDashboardController
 {
@@ -24,7 +27,6 @@ class DashboardController extends AbstractDashboardController
     private $entityManager;
     private $workflowRegistry;
     private $contratRepository;
-    private $googleCalendarService; // Ajoutez cette propriété
 
     public function __construct(Security $security, EntityManagerInterface $entityManager, Registry $workflowRegistry, ContratRepository $contratRepository)
     {
@@ -32,7 +34,6 @@ class DashboardController extends AbstractDashboardController
         $this->entityManager = $entityManager;
         $this->workflowRegistry = $workflowRegistry;
         $this->contratRepository = $contratRepository;
-        //$this->googleCalendarService = $googleCalendarService; // Initialisez le service
     }
 
     #[Route('/admin', name: 'admin_dashboard')]
@@ -116,13 +117,10 @@ class DashboardController extends AbstractDashboardController
             ]
         ];
 
-        // Récupérer les événements Google Calendar
-        
         return $this->render('admin/my-dashboard.html.twig', [
             'taskCount' => $taskCount,
             'chartData' => json_encode($chartData), // Encodez en JSON pour Twig
             'chartDataProgressionContrat' => json_encode($chartDataProgressionContrat), // Encodez en JSON pour Twig
-          //  'events' => $eventsList, // Données des événements Google Calendar
         ]);
     }
 
@@ -138,7 +136,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Contrats', 'fa fa-file-contract', Contrat::class);
         yield MenuItem::linkToCrud('Tâches', 'fa fa-list', Tache::class);
         yield MenuItem::linkToCrud('Documents', 'fa fa-file', Document::class);
-        yield MenuItem::linkToCrud('Calendrier', 'fa fa-calendar', Calendrier::class);
-        // Ajoutez d'autres éléments de menu si nécessaire
+        
+        // Ajoutez le lien vers le calendrier
+        yield MenuItem::linkToRoute('Calendrier', 'fa fa-calendar', 'test_calendar');
     }
 }
