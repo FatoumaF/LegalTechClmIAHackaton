@@ -1,5 +1,10 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/dashboard.css') }}">
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <h1>Dashboard</h1>
@@ -12,9 +17,7 @@
         <h2>Progression des Contrats</h2>
         <canvas id="progressionChart" width="400" height="200"></canvas>
 
-        <!-- Calendrier -->
-        <h2>Calendrier</h2>
-        <div id="calendar"></div>
+        
 
         <!-- Incluez Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -93,15 +96,14 @@
             });
 
             // Initialiser FullCalendar
-            document.addEventListener('DOMContentLoaded', function() {
+            /*document.addEventListener('DOMContentLoaded', function() {
                 var calendarEl = document.getElementById('calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     plugins: [ 'dayGrid' ],
                     events: '/calendar/events' // Route API exposée par le contrôleur Google Calendar
                 });
                 calendar.render();
-            });
+            });*/
         </script>
     </div>
 {% endblock %}
-

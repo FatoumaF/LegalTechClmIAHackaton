@@ -11,8 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CalendarController extends AbstractController
 {
-    #[Route('/admin/calendar', name: 'calendar_page')]
-    public function showCalendar(): Response
+   
+    #[Route('/admin/calendar', name: 'admin_calendar')]
+    public function calendar(): Response
     {
         return $this->render('admin/calendar.html.twig');
     }

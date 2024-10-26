@@ -19,4 +19,10 @@
     <a href="{{ path('app_document_edit', {'id': document.id}) }}">edit</a>
 
     {{ include('document/_delete_form.html.twig') }}
+
+    <h2>Upload File</h2>
+    {{ form_start(uploadForm) }}
+        {{ form_widget(uploadForm) }}
+        <button class="btn">Upload</button>
+    {{ form_end(uploadForm) }}
 {% endblock %}

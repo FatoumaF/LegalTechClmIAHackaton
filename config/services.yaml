@@ -1,3 +1,6 @@
+parameters:
+    upload_directory: '%kernel.project_dir%/public/uploads/images'
+
 services:
     _defaults:
         autowire: true
@@ -15,16 +18,3 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
-
-    # Define Google_Client service using the configurator class
-   # App\Service\GoogleClientConfigurator:
-       # public: true
-
-  #  Google_Client:
-        #class: Google_Client
-       # factory: ['@App\Service\GoogleClientConfigurator', 'createClient']
-
-    # Define Google Calendar Service
-    #App\Service\GoogleCalendarService:
-        #arguments:
-           # - '@Google_Client'

@@ -5,9 +5,9 @@ use App\Repository\DocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 use App\Entity\Contrat;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
-
 class Document
 {
     #[ORM\Id]
@@ -30,9 +30,7 @@ class Document
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private ?string $type = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $fichier = null;
-
+    
     #[ORM\ManyToOne(targetEntity: Contrat::class, inversedBy: 'documents')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Contrat $contratAssocie = null;
@@ -43,6 +41,15 @@ class Document
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'documents')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $fichiers = '';
+
+
+    private ?array $uploadedFiles = null;
+
+
+    
 
     // Getters and Setters
 
@@ -106,16 +113,33 @@ class Document
         return $this;
     }
 
-    public function getFichier(): ?string
+    public function setFichiers(array $fichiers): self
     {
-        return $this->fichier;
-    }
-
-    public function setFichier(?string $fichier): self
-    {
-        $this->fichier = $fichier;
+        $this->fichiers = $fichiers;
         return $this;
     }
+
+    public function addFichier(string $fichier): self
+    {
+        $this->fichiers[] = $fichier;
+        return $this;
+    }
+
+    public function getFichiers(): string
+    {
+        return $this->fichiers;
+    }
+    public function getUploadedFiles(): ?array
+    {
+        return $this->uploadedFiles;
+    }
+
+    public function setUploadedFiles(?array $uploadedFiles): self
+    {
+        $this->uploadedFiles = $uploadedFiles;
+        return $this;
+    }
+    
 
     public function getContratAssocie(): ?Contrat
     {
@@ -149,4 +173,7 @@ class Document
         $this->user = $user;
         return $this;
     }
+
+    // Getter and Setter for file property (used for handling uploads)
+    
 }

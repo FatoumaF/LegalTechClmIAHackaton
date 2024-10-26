@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Upload Document{% endblock %}
+
+{% block body %}
+    <h1>Upload Document</h1>
+
+    {# Formulaire de téléchargement de fichier #}
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+    <div class="form-group">
+        {{ form_label(form.fichiers) }}
+        {{ form_widget(form.fichiers, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.fichiers) }}
+    </div>
+
+    {# Autres champs de formulaire ici #}
+    <div class="form-group">
+        {{ form_row(form.titre) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Upload</button>
+
+    {{ form_end(form) }}
+
+    {# Lien retour à la liste des documents #}
+    <a href="{{ path('admin_document_index') }}" class="btn btn-secondary mt-3">Back to list</a>
+{% endblock %}

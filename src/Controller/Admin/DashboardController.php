@@ -18,6 +18,8 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\Registry;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Fields;
 use Symfony\Component\HttpFoundation\Request;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+
 
 
 
@@ -130,6 +132,7 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('LegalTechClmProject');
     }
 
+
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-dashboard');
@@ -138,6 +141,13 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Documents', 'fa fa-file', Document::class);
         
         // Ajoutez le lien vers le calendrier
-        yield MenuItem::linkToRoute('Calendrier', 'fa fa-calendar', 'test_calendar');
+        yield MenuItem::linkToRoute('Calendrier', 'fa fa-calendar', 'admin_calendar');
     }
+
+    public function configureAssets(): Assets
+{
+    return parent::configureAssets()
+        ->addCssFile('https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.min.css')
+        ->addJsFile('https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js');
+}
 }
